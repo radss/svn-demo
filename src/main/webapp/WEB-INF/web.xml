@@ -1,0 +1,143 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<web-app id="Knihovna" version="2.4" xmlns="http://java.sun.com/xml/ns/j2ee"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://java.sun.com/xml/ns/j2ee http://java.sun.com/xml/ns/j2ee/web-app_2_4.xsd">
+
+  <display-name>Spring MVC demo</display-name>
+  
+  <!-- definice parametru pro Spring ContextLoaderListener urcuje, ktere XML konfigurace se maji nacitat  -->
+  <context-param>
+    <param-name>contextConfigLocation</param-name>
+    <param-value>/WEB-INF/applicationContext.xml</param-value>
+  </context-param>
+
+  <!-- Listener obecne pro funkci Springu (startuje korenovy ApplicationContext). -->
+  <listener>
+    <listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
+  </listener>
+  
+  <!-- Listener springu, ktery zajistuje ze beany se session scope budou fungovat i mimo SpringMVC -->
+  <listener>
+    <listener-class>org.springframework.web.context.request.RequestContextListener</listener-class>
+  </listener>
+
+<!-- 
+  <filter>
+    <filter-name>encoding-filter</filter-name>
+    <filter-class>org.springframework.web.filter.CharacterEncodingFilter</filter-class>
+    <init-param>
+      <param-name>encoding</param-name>
+      <param-value>UTF-8</param-value>
+    </init-param>
+    <init-param>
+    <param-name>forceEncoding</param-name>
+      <param-value>true</param-value>
+    </init-param>
+  </filter>
+  <filter-mapping>
+    <filter-name>encoding-filter</filter-name>
+    <url-pattern>/*</url-pattern>
+  </filter-mapping>
+   -->
+  <!-- 
+    Hlavni servlet Spring MVC!
+    Jmeno konfiguracniho souboru musi byt [nazev tohoto servletu]-servlet.xml. 
+  -->
+  <servlet>
+    <servlet-name>mvc-demo</servlet-name>
+    <servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
+    <load-on-startup>1</load-on-startup>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>mvc-demo</servlet-name>
+    <url-pattern>/</url-pattern>
+  </servlet-mapping>
+  
+  <!-- Servlet pro funkci FreeMarkeru a jeho nastaveni. -->
+  <servlet>
+    <servlet-name>freemarker</servlet-name>
+    <servlet-class>freemarker.ext.servlet.FreemarkerServlet</servlet-class>
+    <init-param>
+      <param-name>TemplatePath</param-name>
+      <param-value>/</param-value>
+    </init-param>
+    <init-param>
+      <param-name>NoCache</param-name>
+      <param-value>true</param-value>
+    </init-param>
+    <init-param>
+      <param-name>ContentType</param-name>
+      <param-value>text/html</param-value>
+    </init-param>
+    <init-param>
+      <param-name>template_update_delay</param-name>
+      <param-value>0</param-value> <!-- 0 is for development only! Use higher value otherwise. -->
+    </init-param>
+    <init-param>
+      <param-name>default_encoding</param-name>
+      <param-value>UTF-8</param-value>
+    </init-param>
+    <init-param>
+      <param-name>number_format</param-name>
+      <param-value>0.##########</param-value>
+    </init-param>
+    <load-on-startup>3</load-on-startup>
+  </servlet>  
+  <servlet-mapping>
+    <servlet-name>freemarker</servlet-name>
+    <url-pattern>*.ftl</url-pattern>
+  </servlet-mapping>
+  
+  <!-- Tomcat-only mapovani souboru, ktere nemaji spadat pod SpringMVC -->
+  <servlet-mapping>
+    <servlet-name>default</servlet-name>
+    <url-pattern>*.css</url-pattern>
+  </servlet-mapping>
+  <servlet-mapping>
+    <servlet-name>default</servlet-name>
+    <url-pattern>*.png</url-pattern>
+  </servlet-mapping>
+  <servlet-mapping>
+    <servlet-name>default</servlet-name>
+    <url-pattern>*.jpg</url-pattern>
+  </servlet-mapping>
+  <servlet-mapping>
+    <servlet-name>default</servlet-name>
+    <url-pattern>*.js</url-pattern>
+  </servlet-mapping>
+  <servlet-mapping>
+    <servlet-name>default</servlet-name>
+    <url-pattern>*.ico</url-pattern>
+  </servlet-mapping>
+  
+  <!-- definice uvodnich stranek na ktere to reaguje -->
+  <!-- 
+  <welcome-file-list>
+    <welcome-file>index.html</welcome-file>
+  </welcome-file-list>
+  -->  
+  
+  
+   <!-- 
+ demonstracni namapovani stareho dobrehe servletu a filtru 
+  <servlet>
+    <servlet-name>oldServlet</servlet-name>
+    <servlet-class>cz.csob.cc.demo.servlet.OldSchoolServlet</servlet-class>
+    <load-on-startup>1</load-on-startup>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>oldServlet</servlet-name>
+    <url-pattern>/old</url-pattern>
+  </servlet-mapping>
+  
+  <filter>
+    <filter-name>prdiciFilter</filter-name>
+    <filter-class>cz.csob.cc.demo.filter.PrdiciFilter</filter-class>
+  </filter>
+  <filter-mapping>
+    <filter-name>prdiciFilter</filter-name>
+    <url-pattern>/old</url-pattern>
+  </filter-mapping>
+  
+  -->
+</web-app>
